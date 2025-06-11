@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import tkinter as tk
 from tkinter import messagebox
 
-# Constants for trailer dimensions
+# Constants for trailer dimensions (in meters)
 # UPDATE TO FIT 1/8 MODEL!
 HEIGHT = 2.7
 LENGTH = 13.625
@@ -38,7 +38,7 @@ def visualize_cargo_load(load_grid):
     # Add color mapping based on height
     colors = plt.cm.RdYlGn((dz) / (HEIGHT))
     ax.bar3d(x, y, z, dx, dy, dz, color=colors,linewidth=0.5, edgecolor='black', alpha=0.8)
-    
+
     # Draw cargo hold (trailer) as a wireframe box
     corners = np.array([
         [0, 0, 0], [LENGTH, 0, 0], [LENGTH, WIDTH, 0], [0, WIDTH, 0],
@@ -94,33 +94,41 @@ def launch_gui():
     root.title("Cargo Load Input")
 
     entries = []
+    # Add Input prompt label
+    prompt_label = tk.Label(root, text="Enter cargo heights (in meters):", font=("Arial", 10))
+    prompt_label.grid(row=0, column=0, columnspan=2, pady=(5,0), padx=(10, 10))
+
     # Add 'FRONT' label above first row
     front_label = tk.Label(root, text="FRONT", fg="blue", font=("Arial", 10, "bold"))
-    front_label.grid(row=0, column=0, columnspan=2, pady=(5,0))
+    front_label.grid(row=1, column=0, columnspan=2, pady=(5,0))
 
     # Entry fields (start at row=1)
     for i in range(3):
         row_entries = []
         for j in range(2):
             e = tk.Entry(root, width=5, justify='center')
-            e.grid(row=i+1, column=j, padx=5, pady=5)
+            e.grid(row=i+2, column=j, padx=5, pady=5)
             e.insert(0, "0")
             row_entries.append(e)
         entries.append(row_entries)
 
     # Add 'REAR' label below last row
     rear_label = tk.Label(root, text="REAR", fg="blue", font=("Arial", 10, "bold"))
-    rear_label.grid(row=4, column=0, columnspan=2, pady=(0,5))
+    rear_label.grid(row=5, column=0, columnspan=2, pady=(0,5))
 
     # Output fields for calculated values
     result_var = tk.StringVar()
     zones_var = tk.StringVar()
     result_label = tk.Label(root, textvariable=result_var, font=("Arial", 10))
-    result_label.grid(row=6, column=0, columnspan=2, pady=(5,0))
+    result_label.grid(row=7, column=0, columnspan=2, pady=(5,0))
     result_var.set(f"Total cargo load: 0.00 %")
     zones_label = tk.Label(root, textvariable=zones_var, font=("Arial", 10))
-    zones_label.grid(row=7, column=0, columnspan=2, pady=(0,5))
+    zones_label.grid(row=8, column=0, columnspan=2, pady=(0,5))
     zones_var.set(f"Loaded zones: 0/6")
+
+    # Add trailer dimension info at the bottom
+    dim_label = tk.Label(root, text=f"Trailer dimensions (change in script file):\nHEIGHT={HEIGHT} m, WIDTH={WIDTH} m, LENGTH={LENGTH} m", font=("Arial", 9, "italic"), fg="gray", justify="center")
+    dim_label.grid(row=9, column=0, columnspan=2, pady=(10,5))
 
     def get_grid():
         grid = np.zeros((3,2))
@@ -152,9 +160,9 @@ def launch_gui():
             messagebox.showerror("Input Error", str(ex))
 
     btn_calc = tk.Button(root, text="Calculate", command=on_calculate)
-    btn_calc.grid(row=5, column=0, pady=10)
+    btn_calc.grid(row=6, column=0, pady=10)
     btn_vis = tk.Button(root, text="Visualize", command=on_visualize)
-    btn_vis.grid(row=5, column=1, pady=10)
+    btn_vis.grid(row=6, column=1, pady=10)
 
     root.mainloop()
 
