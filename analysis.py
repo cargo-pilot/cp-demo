@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import tkinter as tk
 from tkinter import messagebox
 
 # Constants for trailer dimensions (in meters)
-# UPDATE TO FIT 1/8 MODEL!
+# UPDATE TO FIT 1:8 MODEL!
 HEIGHT = 2.7
 LENGTH = 13.625
 WIDTH = 2.48
@@ -127,7 +126,13 @@ def launch_gui():
     zones_var.set(f"Loaded zones: 0/6")
 
     # Add trailer dimension info at the bottom
-    dim_label = tk.Label(root, text=f"Trailer dimensions (change in script file):\nHEIGHT={HEIGHT} m, WIDTH={WIDTH} m, LENGTH={LENGTH} m", font=("Arial", 9, "italic"), fg="gray", justify="center")
+    dim_label = tk.Label(
+        root, 
+        text=f"Trailer dimensions (change in script file):\n HEIGHT={HEIGHT} m \n WIDTH={WIDTH} m \n LENGTH={LENGTH} m",#
+        font=("Arial", 9, "italic"),
+        fg="gray",
+        justify="center"
+        )
     dim_label.grid(row=9, column=0, columnspan=2, pady=(10,5))
 
     def get_grid():
